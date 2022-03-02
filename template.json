@@ -461,5 +461,25 @@
                 }
             }
         }
+    },
+    "Outputs": {
+        "ELBDNS": {
+            "Description": "The DNS for the ELB / our app.",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "http://",
+                        {
+                            "Fn::GetAtt": [
+                                "LoadBalancer",
+                                "DNSName"
+                            ]
+                        },
+                        "/index.html"
+                    ]
+                ]
+            }
+        }
     }
 }
