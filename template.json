@@ -69,7 +69,15 @@
                 "AvailabilityZone": {
                     "Ref": "VPCAZ"
                 },
-                "ImageId": "IMAGE-ID",
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSNATAMIs",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "AMI"
+                    ]
+                },
                 "InstanceType": "m3.medium",
                 "SecurityGroupIds": [
                     {
@@ -284,7 +292,15 @@
                 "IamInstanceProfile": {
                     "Ref": "DynamoAccessInstanceProfile"
                 },
-                "ImageId": "IMAGE-ID",
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AWSLinuxAMIs",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        "AMI"
+                    ]
+                },
                 "InstanceMonitoring": true,
                 "InstanceType": {
                     "Ref": "NodeSize"
