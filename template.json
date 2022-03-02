@@ -104,6 +104,9 @@
             "Type": "AWS::EC2::InternetGateway"
         },
         "NATInstance": {
+            "DependsOn": [
+                "GatewayAttachmentToVPC"
+            ],
             "Type": "AWS::EC2::Instance",
             "Properties": {
                 "AvailabilityZone": {
@@ -128,10 +131,7 @@
                 "SubnetId": {
                     "Ref": "PublicSubnet"
                 }
-            },
-            "DependsOn": [
-                "GatewayAttachmentToVPC"
-            ]
+            }
         },
         "RoutesForPublicSubnet": {
             "Type": "AWS::EC2::RouteTable",
@@ -211,7 +211,18 @@
         "NACLOutboundEntry": {
             "Type": "AWS::EC2::NetworkAclEntry",
             "Properties": {
-                "Egress": true
+                "CidrBlock": "0.0.0.0/0",
+                "Egress": true,
+                "NetworkAclId": {
+                    "Ref": "GenericNACL"
+                },
+                "PortRange": {
+                    "From": 0,
+                    "To": 65535
+                },
+                "Protocol": 6,
+                "RuleAction": "allow",
+                "RuleNumber": 100
             }
         },
         "NACLBindingForPublicSubnet": {
